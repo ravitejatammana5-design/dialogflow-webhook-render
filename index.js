@@ -1,10 +1,10 @@
-// index.js — Render-friendly webhook for Dialogflow -> Google Sheets
+// index.js — Vercel-friendly webhook for Dialogflow -> Google Sheets
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 
-const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL;      // set in Render
+const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL;      // set in Vercel
 const APPS_SCRIPT_SECRET = process.env.APPS_SCRIPT_SECRET || ''; // optional
 
 const app = express();
@@ -75,7 +75,7 @@ app.post('/webhook', async (req, res) => {
       // simple cancellation log
       const cancelId = params.booking_id || rawText.split(' ').pop();
       await sendToSheet({ action: 'CANCEL', bookingId: cancelId, createdAt: new Date().toISOString(), raw: rawText });
-      return res.json({ fulfillmentText: `✅ Cancellation requested for ${cancelId}` });
+      return res.json({ fulfillmentText: ✅ Cancellation requested for ${cancelId} });
     } else {
       // fallback
       return res.json({ fulfillmentText: "I help with buses, movies and museums bookings. Try 'Book a bus from Hyderabad to Bangalore'." });
@@ -89,13 +89,13 @@ app.post('/webhook', async (req, res) => {
     // Save to Google Sheets via Apps Script
     await sendToSheet(base);
 
-    return res.json({ fulfillmentText: `✅ Booking confirmed. ID: ${base.bookingId}` });
+    return res.json({ fulfillmentText: ✅ Booking confirmed. ID: ${base.bookingId} });
   } catch (err) {
     console.error('Webhook error:', err.message || err);
     return res.json({ fulfillmentText: "Sorry — something went wrong on the server." });
   }
 });
 
-app.get('/', (req, res) => res.send('Webhook (Render) running'));
+app.get('/', (req, res) => res.send('Webhook (Vercel) running'));
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Server started on ${PORT}`));
+app.listen(PORT, () => console.log(Server started on ${PORT}));
